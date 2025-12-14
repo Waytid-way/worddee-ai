@@ -34,7 +34,7 @@
 
 ```bash
 # Clone worddee-ai (main project)
-git clone https://github.com/Thanat-Wut/worddee-ai.git
+git clone https://github.com/Waytid-way/worddee-ai.git
 cd worddee-ai
 
 # Clone worddee-api (vocabulary API) ไปยัง parent directory
