@@ -1,8 +1,8 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
 import { api, DashboardStats } from '@/lib/api';
+import ProgressChart from '@/components/ProgressChart'; 
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -32,7 +32,7 @@ export default function DashboardPage() {
       <div>
         <h2>Your Dashboard</h2>
         <div className="card">
-          <div className="loading">Loading statistics</div>
+          <div className="loading">Loading statistics...</div>
         </div>
       </div>
     );
@@ -57,6 +57,7 @@ export default function DashboardPage() {
     <div>
       <h2>Your Dashboard</h2>
 
+      {/* 1. ส่วนแสดงผลตัวเลขสรุป (Stats Grid) */}
       <div className="stats-grid">
         <div className="stat-card">
           <div className="stat-value">{stats.total_sessions}</div>
@@ -72,7 +73,23 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="card">
+      {/* 2. ส่วนแสดงกราฟ (Progress Chart) - เพิ่มเข้ามาใหม่ */}
+      <div className="card" style={{ marginTop: '2rem' }}>
+        <h3 style={{ marginBottom: '1.5rem', color: '#333' }}>Score Progress</h3>
+        
+        {stats.recent_sessions.length > 0 ? (
+          // หมายเหตุ: ใช้ .reverse() เพื่อให้กราฟพล็อตจาก อดีต -> ปัจจุบัน (ซ้ายไปขวา)
+          // ต้อง spread array [...] ก่อน เพื่อไม่ให้กระทบ array ต้นฉบับ
+          <ProgressChart sessions={[...stats.recent_sessions].reverse()} />
+        ) : (
+          <p style={{ textAlign: 'center', color: '#999', padding: '2rem' }}>
+            Not enough data to show progress chart.
+          </p>
+        )}
+      </div>
+
+      {/* 3. รายการย้อนหลัง (Recent Sessions List) */}
+      <div className="card" style={{ marginTop: '2rem' }}>
         <h3 style={{ marginBottom: '1.5rem', color: '#333' }}>Recent Practice Sessions</h3>
         {stats.recent_sessions.length === 0 ? (
           <p style={{ textAlign: 'center', color: '#999', padding: '2rem' }}>
